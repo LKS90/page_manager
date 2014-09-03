@@ -118,8 +118,8 @@ class PageEditForm extends PageFormBase {
     $form['context']['static']['add_static_context'] = array(
       '#type' => 'submit',
       '#value' => $this->t('Add context'),
-      '#validate' => array(array($this, 'validateStaticContext')),
-      '#submit' => array(array($this, 'submitStaticContext')),
+      '#validate' => array('::validateStaticContext'),
+      '#submit' => array('::submitStaticContext'),
     );
 
     $form['display_variant_section'] = array(
