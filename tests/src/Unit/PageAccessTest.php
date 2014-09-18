@@ -102,6 +102,11 @@ class PageAccessTest extends UnitTestCase {
       ->method('status')
       ->will($this->returnValue(FALSE));
     $account = $this->getMock('Drupal\Core\Session\AccountInterface');
+
+    $page->expects($this->once())
+      ->method('getCacheTag')
+      ->willReturn(array('page' => array(1)));
+
     $this->assertFalse($this->pageAccess->access($page, 'view', NULL, $account));
   }
 
@@ -122,6 +127,13 @@ class PageAccessTest extends UnitTestCase {
     $page->expects($this->any())
       ->method('isFallbackPage')
       ->will($this->returnValue($is_fallback));
+
+    // Ensure that the cache tag is added for the temporary conditions.
+    if ($is_new || $is_fallback) {
+      $page->expects($this->once())
+        ->method('getCacheTag')
+        ->willReturn(array('page' => array(1)));
+    }
 
     $account = $this->getMock('Drupal\Core\Session\AccountInterface');
     $account->expects($this->any())

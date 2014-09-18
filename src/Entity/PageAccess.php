@@ -8,6 +8,7 @@
 namespace Drupal\page_manager\Entity;
 
 use Drupal\Component\Plugin\ContextAwarePluginInterface;
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Condition\ConditionAccessResolverTrait;
 use Drupal\Core\Entity\EntityAccessControlHandler;
 use Drupal\Core\Entity\EntityHandlerInterface;
@@ -70,7 +71,7 @@ class PageAccess extends EntityAccessControlHandler implements EntityHandlerInte
     /** @var $entity \Drupal\page_manager\PageInterface */
     if ($operation == 'view') {
       if (!$entity->status()) {
-        return FALSE;
+        return AccessResult::forbidden()->cacheUntilEntityChanges($entity);
       }
 
       $conditions = $entity->getAccessConditions();
@@ -80,10 +81,10 @@ class PageAccess extends EntityAccessControlHandler implements EntityHandlerInte
           $this->contextHandler()->applyContextMapping($condition, $contexts);
         }
       }
-      return $this->resolveConditions($conditions, $entity->getAccessLogic(), $contexts);
+      return AccessResult::allowedIf($this->resolveConditions($conditions, $entity->getAccessLogic(), $contexts));
     }
     if ($operation == 'delete' && $entity->isFallbackPage()) {
-      return FALSE;
+      return AccessResult::forbidden()->cacheUntilEntityChanges($entity);
     }
     return parent::checkAccess($entity, $operation, $langcode, $account);
   }

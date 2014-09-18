@@ -62,7 +62,7 @@ class RouteParamContext implements EventSubscriberInterface {
     if ($route_contexts = $route->getOption('parameters')) {
       foreach ($route_contexts as $route_context_name => $route_context) {
         // Skip this parameter.
-        if ($route_context_name == '_page') {
+        if ($route_context_name == 'page_manager_page') {
           continue;
         }
 

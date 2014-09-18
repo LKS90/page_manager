@@ -54,7 +54,7 @@ class PageManagerRoutes extends RouteSubscriberBase {
       // Prepare the values that need to be altered for an existing page.
       $path = $entity->getPath();
       $parameters = array(
-        '_page' => array(
+        'page_manager_page' => array(
           'type' => 'entity:page',
         ),
       );
@@ -84,12 +84,12 @@ class PageManagerRoutes extends RouteSubscriberBase {
       $route = new Route(
         $path,
         array(
-          '_entity_view' => '_page',
-          '_page' => $entity_id,
+          '_entity_view' => 'page_manager_page',
+          'page_manager_page' => $entity_id,
           '_title' => $entity->label(),
         ),
         array(
-          '_entity_access' => '_page.view',
+          '_entity_access' => 'page_manager_page.view',
         ),
         array(
           'parameters' => $parameters,
