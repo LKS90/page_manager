@@ -75,6 +75,7 @@ class BlockDisplayVariant extends VariantBase implements ContextAwareVariantInte
    *
    * @var \Drupal\Core\Utility\Token
    */
+  protected $token;
 
   /**
    * Constructs a new BlockDisplayVariant.
@@ -91,7 +92,7 @@ class BlockDisplayVariant extends VariantBase implements ContextAwareVariantInte
    *   The current user.
    * @param \Drupal\Component\Uuid\UuidInterface $uuid_generator
    *   The UUID generator.
-   * @param \Drupal\Core\Utility\Token
+   * @param \Drupal\Core\Utility\Token $token
    *   The token service.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, ContextHandlerInterface $context_handler, AccountInterface $account, UuidInterface $uuid_generator, Token $token) {
@@ -350,8 +351,8 @@ class BlockDisplayVariant extends VariantBase implements ContextAwareVariantInte
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     parent::submitConfigurationForm($form, $form_state);
 
-    if (!empty($form_state['values']['page_title'])) {
-      $this->configuration['page_title'] = $form_state['values']['page_title'];
+    if ($form_state->hasValue('page_title')) {
+      $this->configuration['page_title'] = $form_state->getValue('page_title');
     }
 
     // If the blocks were rearranged, update their values.
