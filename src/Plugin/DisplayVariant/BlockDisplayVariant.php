@@ -140,7 +140,7 @@ class BlockDisplayVariant extends VariantBase implements ContextAwareVariantInte
         if ($block instanceof ContextAwarePluginInterface) {
           $this->contextHandler()->applyContextMapping($block, $contexts);
         }
-        if ($block->access($this->account)) {
+        if ($block->access($this->account)->isAllowed()) {
           $block_render_array = array(
             '#theme' => 'block',
             '#attributes' => array(),

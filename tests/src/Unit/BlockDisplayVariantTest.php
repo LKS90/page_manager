@@ -7,6 +7,7 @@
 
 namespace Drupal\Tests\page_manager\Unit;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Component\Plugin\ContextAwarePluginInterface;
 use Drupal\Core\Form\FormState;
@@ -65,7 +66,7 @@ class BlockDisplayVariantTest extends UnitTestCase {
     $block1 = $this->getMock('Drupal\Core\Block\BlockPluginInterface');
     $block1->expects($this->once())
       ->method('access')
-      ->will($this->returnValue(TRUE));
+      ->will($this->returnValue(AccessResult::allowed()));
     $block1->expects($this->once())
       ->method('build')
       ->will($this->returnValue(array(
@@ -86,7 +87,7 @@ class BlockDisplayVariantTest extends UnitTestCase {
     $block2 = $this->getMock('Drupal\Tests\page_manager\Unit\TestContextAwareBlockPluginInterface');
     $block2->expects($this->once())
       ->method('access')
-      ->will($this->returnValue(FALSE));
+      ->will($this->returnValue(AccessResult::forbidden()));
     $block2->expects($this->never())
       ->method('build');
     $blocks = array(
