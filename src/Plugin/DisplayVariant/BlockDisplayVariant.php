@@ -219,16 +219,20 @@ class BlockDisplayVariant extends VariantBase implements ContextAwareVariantInte
         }
       }
     }
-    $build['#title'] = $this->renderPageTitle($this->configuration['page_title']);
 
     // Set up render cache on the page level.
     if ($max_page_expire !== NULL) {
-      $build['#cache'] = array(
+      // Move the actual content inside an inner render array, so it does not
+      // affect the page title.
+      $build['content'] = $build;
+      $build['content']['#cache'] = array(
         'keys' => array_unique($page_cache_keys),
         'tags' => $page->getCacheTag(),
         'expire' => ($max_page_expire === Cache::PERMANENT) ? Cache::PERMANENT : REQUEST_TIME + $max_page_expire,
       );
     }
+
+    $build['#title'] = $this->renderPageTitle($this->configuration['page_title']);
 
     return $build;
   }
