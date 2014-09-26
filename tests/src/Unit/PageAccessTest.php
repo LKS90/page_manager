@@ -105,7 +105,7 @@ class PageAccessTest extends UnitTestCase {
 
     $page->expects($this->once())
       ->method('getCacheTag')
-      ->willReturn(array('page' => array(1)));
+      ->willReturn(['page:1']);
 
     $this->assertFalse($this->pageAccess->access($page, 'view', NULL, $account));
   }
@@ -132,7 +132,7 @@ class PageAccessTest extends UnitTestCase {
     if ($is_new || $is_fallback) {
       $page->expects($this->once())
         ->method('getCacheTag')
-        ->willReturn(array('page' => array(1)));
+        ->willReturn(['page:1']);
     }
 
     $account = $this->getMock('Drupal\Core\Session\AccountInterface');
