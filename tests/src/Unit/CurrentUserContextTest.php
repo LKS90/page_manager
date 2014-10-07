@@ -7,6 +7,8 @@
 
 namespace Drupal\Tests\page_manager\Unit;
 
+use Drupal\Core\Entity\Plugin\DataType\EntityAdapter;
+use Drupal\Core\TypedData\DataDefinition;
 use Drupal\page_manager\EventSubscriber\CurrentUserContext;
 use Drupal\user\UserInterface;
 
@@ -36,15 +38,24 @@ class CurrentUserContextTest extends PageContextTestBase {
     $account->expects($this->once())
       ->method('id')
       ->will($this->returnValue(1));
+    $user = $this->getMock('Drupal\Tests\page_manager\Unit\TestUserInterface');
 
-    $this->typedDataManager->expects($this->never())
-      ->method('create');
+    $this->typedDataManager->expects($this->any())
+      ->method('create')
+      ->willReturn(EntityAdapter::createFromEntity($user));
+    $this->typedDataManager->expects($this->any())
+      ->method('getDefaultConstraints')
+      ->will($this->returnValue([]));
+    $this->typedDataManager->expects($this->any())
+      ->method('createDataDefinition')
+      ->will($this->returnCallback(function ($type) {
+        return new DataDefinition(['type' => $type]);
+      }));
 
     $this->executable->expects($this->once())
       ->method('addContext')
       ->with('current_user', $this->isInstanceOf('Drupal\Core\Plugin\Context\Context'));
 
-    $user = $this->getMock('Drupal\Tests\page_manager\Unit\TestUserInterface');
     $entity_manager = $this->getMock('Drupal\Core\Entity\EntityManagerInterface');
     $user_storage = $this->getMock('Drupal\Core\Entity\EntityStorageInterface');
     $user_storage->expects($this->once())
