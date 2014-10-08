@@ -60,6 +60,7 @@ class PageManagerAdminTest extends WebTestBase {
     $this->doTestRemoveDisplayVariant();
     $this->doTestRemoveBlock();
     $this->doTestExistingPathWithoutParameters();
+    $this->doTestDeletePage();
   }
 
   /**
@@ -336,6 +337,27 @@ class PageManagerAdminTest extends WebTestBase {
 
     // Ensure the existing path leads to the new page.
     $this->drupalGet('admin');
+    $this->assertResponse(404);
+  }
+
+  /**
+   * Tests deleting a page.
+   */
+  protected function doTestDeletePage() {
+    $this->drupalGet('admin/structure/page_manager');
+    $this->clickLink('Delete');
+    $this->drupalPostForm(NULL, [], 'Delete');
+    $this->assertRaw(String::format('The page %name has been removed.', ['%name' => 'existing']));
+    $this->drupalGet('admin');
+    // The overridden page is back to its default.
+    $this->assertResponse(200);
+
+    $this->drupalGet('admin/structure/page_manager');
+    $this->clickLink('Delete');
+    $this->drupalPostForm(NULL, [], 'Delete');
+    $this->assertRaw(String::format('The page %name has been removed.', ['%name' => 'Foo']));
+    $this->drupalGet('admin/foo');
+    // The custom page is no longer found.
     $this->assertResponse(404);
   }
 

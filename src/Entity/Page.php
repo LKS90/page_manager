@@ -196,7 +196,15 @@ class Page extends ConfigEntityBase implements PageInterface {
    */
   public function postSave(EntityStorageInterface $storage, $update = TRUE) {
     parent::postSave($storage, $update);
-    $this->routeBuilder()->setRebuildNeeded();
+    static::routeBuilder()->setRebuildNeeded();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function postDelete(EntityStorageInterface $storage, array $entities) {
+    parent::postDelete($storage, $entities);
+    static::routeBuilder()->setRebuildNeeded();
   }
 
   /**
@@ -205,7 +213,7 @@ class Page extends ConfigEntityBase implements PageInterface {
    * @return \Drupal\Core\Routing\RouteBuilderInterface
    *   An object for state storage.
    */
-  protected function routeBuilder() {
+  protected static function routeBuilder() {
     return \Drupal::service('router.builder');
   }
 
