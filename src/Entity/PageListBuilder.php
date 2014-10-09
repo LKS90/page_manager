@@ -9,6 +9,7 @@ namespace Drupal\page_manager\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Url;
 use Drupal\page_manager\PageInterface;
 
 /**
@@ -55,7 +56,8 @@ class PageListBuilder extends ConfigEntityListBuilder {
       return array(
         'data' => array(
           '#type' => 'link',
-          '#href' => $path,
+          // @todo Update once https://www.drupal.org/node/2351379 is in.
+          '#url' => Url::fromUri('base://' . trim($path, '/')),
           '#title' => $path,
         ),
       );

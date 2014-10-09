@@ -12,6 +12,7 @@ use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormState;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 
 /**
  * Provides a form for editing a page entity.
@@ -130,10 +131,9 @@ class PageEditForm extends PageFormBase {
     $form['display_variant_section']['add_new_page'] = array(
       '#type' => 'link',
       '#title' => $this->t('Add new display variant'),
-      '#route_name' => 'page_manager.display_variant_select',
-      '#route_parameters' => array(
+      '#url' => Url::fromRoute('page_manager.display_variant_select', [
         'page' => $this->entity->id(),
-      ),
+      ]),
       '#attributes' => $add_button_attributes,
       '#attached' => array(
         'library' => array(
@@ -176,19 +176,17 @@ class PageEditForm extends PageFormBase {
       $operations = array();
       $operations['edit'] = array(
         'title' => $this->t('Edit'),
-        'route_name' => 'page_manager.display_variant_edit',
-        'route_parameters' => array(
+        'url' => Url::fromRoute('page_manager.display_variant_edit', [
           'page' => $this->entity->id(),
           'display_variant_id' => $display_variant_id,
-        ),
+        ]),
       );
       $operations['delete'] = array(
         'title' => $this->t('Delete'),
-        'route_name' => 'page_manager.display_variant_delete',
-        'route_parameters' => array(
+        'url' => Url::fromRoute('page_manager.display_variant_delete', [
           'page' => $this->entity->id(),
           'display_variant_id' => $display_variant_id,
-        ),
+        ]),
       );
       $row['operations'] = array(
         '#type' => 'operations',
@@ -206,10 +204,9 @@ class PageEditForm extends PageFormBase {
       $form['access_section_section']['add'] = array(
         '#type' => 'link',
         '#title' => $this->t('Add new access condition'),
-        '#route_name' => 'page_manager.access_condition_select',
-        '#route_parameters' => array(
+        '#url' => Url::fromRoute('page_manager.access_condition_select', [
           'page' => $this->entity->id(),
-        ),
+        ]),
         '#attributes' => $add_button_attributes,
         '#attached' => array(
           'library' => array(
@@ -246,20 +243,18 @@ class PageEditForm extends PageFormBase {
         $operations = array();
         $operations['edit'] = array(
           'title' => $this->t('Edit'),
-          'route_name' => 'page_manager.access_condition_edit',
-          'route_parameters' => array(
+          'url' => Url::fromRoute('page_manager.access_condition_edit', [
             'page' => $this->entity->id(),
             'condition_id' => $access_id,
-          ),
+          ]),
           'attributes' => $attributes,
         );
         $operations['delete'] = array(
           'title' => $this->t('Delete'),
-          'route_name' => 'page_manager.access_condition_delete',
-          'route_parameters' => array(
+          'url' => Url::fromRoute('page_manager.access_condition_delete', [
             'page' => $this->entity->id(),
             'condition_id' => $access_id,
-          ),
+          ]),
           'attributes' => $attributes,
         );
         $row['operations'] = array(

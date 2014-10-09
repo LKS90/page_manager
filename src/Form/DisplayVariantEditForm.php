@@ -9,6 +9,7 @@ namespace Drupal\page_manager\Form;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Drupal\page_manager\PageInterface;
 use Drupal\Component\Serialization\Json;
 use Drupal\page_manager\Plugin\ConditionVariantInterface;
@@ -66,11 +67,10 @@ class DisplayVariantEditForm extends DisplayVariantFormBase {
         $form['selection_section']['add'] = array(
           '#type' => 'link',
           '#title' => $this->t('Add new selection condition'),
-          '#route_name' => 'page_manager.selection_condition_select',
-          '#route_parameters' => array(
+          '#url' => Url::fromRoute('page_manager.selection_condition_select', [
             'page' => $this->page->id(),
             'display_variant_id' => $this->displayVariant->id(),
-          ),
+          ]),
           '#attributes' => $add_button_attributes,
           '#attached' => array(
             'library' => array(
@@ -107,22 +107,20 @@ class DisplayVariantEditForm extends DisplayVariantFormBase {
           $operations = array();
           $operations['edit'] = array(
             'title' => $this->t('Edit'),
-            'route_name' => 'page_manager.selection_condition_edit',
-            'route_parameters' => array(
+            'url' => Url::fromRoute('page_manager.selection_condition_edit', [
               'page' => $this->page->id(),
               'display_variant_id' => $this->displayVariant->id(),
               'condition_id' => $selection_id,
-            ),
+            ]),
             'attributes' => $attributes,
           );
           $operations['delete'] = array(
             'title' => $this->t('Delete'),
-            'route_name' => 'page_manager.selection_condition_delete',
-            'route_parameters' => array(
+            'url' => Url::fromRoute('page_manager.selection_condition_delete', [
               'page' => $this->page->id(),
               'display_variant_id' => $this->displayVariant->id(),
               'condition_id' => $selection_id,
-            ),
+            ]),
             'attributes' => $attributes,
           );
           $row['operations'] = array(

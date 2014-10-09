@@ -19,6 +19,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Utility\Token;
+use Drupal\Core\Url;
 use Drupal\page_manager\PageExecutable;
 use Drupal\page_manager\Plugin\BlockVariantInterface;
 use Drupal\page_manager\Plugin\BlockVariantTrait;
@@ -314,11 +315,10 @@ class BlockDisplayVariant extends VariantBase implements ContextAwareVariantInte
       $form['block_section']['add'] = array(
         '#type' => 'link',
         '#title' => $this->t('Add new block'),
-        '#route_name' => 'page_manager.display_variant_select_block',
-        '#route_parameters' => array(
+        '#url' => Url::fromRoute('page_manager.display_variant_select_block', [
           'page' => $page_id,
           'display_variant_id' => $this->id(),
-        ),
+        ]),
         '#attributes' => $add_button_attributes,
         '#attached' => array(
           'library' => array(
@@ -419,22 +419,20 @@ class BlockDisplayVariant extends VariantBase implements ContextAwareVariantInte
           $operations = array();
           $operations['edit'] = array(
             'title' => $this->t('Edit'),
-            'route_name' => 'page_manager.display_variant_edit_block',
-            'route_parameters' => array(
+            'url' => Url::fromRoute('page_manager.display_variant_edit_block', [
               'page' => $page_id,
               'display_variant_id' => $this->id(),
               'block_id' => $block_id,
-            ),
+            ]),
             'attributes' => $attributes,
           );
           $operations['delete'] = array(
             'title' => $this->t('Delete'),
-            'route_name' => 'page_manager.display_variant_delete_block',
-            'route_parameters' => array(
+            'url' => Url::fromRoute('page_manager.display_variant_delete_block', [
               'page' => $page_id,
               'display_variant_id' => $this->id(),
               'block_id' => $block_id,
-            ),
+            ]),
             'attributes' => $attributes,
           );
 

@@ -8,6 +8,7 @@
 namespace Drupal\page_manager\Controller;
 
 use Drupal\Core\Block\BlockManagerInterface;
+use Drupal\Core\Url;
 use Drupal\page_manager\PageInterface;
 use Drupal\Core\Plugin\Context\ContextHandlerInterface;
 use Drupal\Component\Plugin\PluginManagerInterface;
@@ -186,11 +187,10 @@ class PageManagerController extends ControllerBase {
     foreach ($this->variantManager->getDefinitions() as $display_variant_id => $display_variant) {
       $build['#links'][$display_variant_id] = array(
         'title' => $display_variant['admin_label'],
-        'route_name' => 'page_manager.display_variant_add',
-        'route_parameters' => array(
+        'url' => Url::fromRoute('page_manager.display_variant_add', [
           'page' => $page->id(),
           'display_variant_id' => $display_variant_id,
-        ),
+        ]),
         'attributes' => array(
           'class' => array('use-ajax'),
           'data-accepts' => 'application/vnd.drupal-modal',
@@ -221,11 +221,10 @@ class PageManagerController extends ControllerBase {
     foreach ($available_plugins as $access_id => $access_condition) {
       $build['#links'][$access_id] = array(
         'title' => $access_condition['label'],
-        'route_name' => 'page_manager.access_condition_add',
-        'route_parameters' => array(
+        'url' => Url::fromRoute('page_manager.access_condition_add', [
           'page' => $page->id(),
           'condition_id' => $access_id,
-        ),
+        ]),
         'attributes' => array(
           'class' => array('use-ajax'),
           'data-accepts' => 'application/vnd.drupal-modal',
@@ -258,12 +257,11 @@ class PageManagerController extends ControllerBase {
     foreach ($available_plugins as $selection_id => $selection_condition) {
       $build['#links'][$selection_id] = array(
         'title' => $selection_condition['label'],
-        'route_name' => 'page_manager.selection_condition_add',
-        'route_parameters' => array(
+        'url' => Url::fromRoute('page_manager.selection_condition_add', [
           'page' => $page->id(),
           'display_variant_id' => $display_variant_id,
           'condition_id' => $selection_id,
-        ),
+        ]),
         'attributes' => array(
           'class' => array('use-ajax'),
           'data-accepts' => 'application/vnd.drupal-modal',
@@ -316,13 +314,12 @@ class PageManagerController extends ControllerBase {
       // Add a link for each available block within each region.
       $build[$category_key]['content']['#links'][$plugin_id] = array(
         'title' => $plugin_definition['admin_label'],
-        'route_name' => 'page_manager.display_variant_add_block',
-        'route_parameters' => array(
+        'url' => Url::fromRoute('page_manager.display_variant_add_block', [
           'page' => $page->id(),
           'display_variant_id' => $display_variant_id,
           'block_id' => $plugin_id,
           'region' => $request->query->get('region'),
-        ),
+        ]),
         'attributes' => array(
           'class' => array('use-ajax'),
           'data-accepts' => 'application/vnd.drupal-modal',
