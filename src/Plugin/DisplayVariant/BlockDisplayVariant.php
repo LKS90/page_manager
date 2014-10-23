@@ -498,7 +498,7 @@ class BlockDisplayVariant extends VariantBase implements ContextAwareVariantInte
    * {@inheritdoc}
    */
   public function calculateDependencies() {
-    foreach ($this->getBlockBag() as $instance) {
+    foreach ($this->getBlockCollection() as $instance) {
       $this->calculatePluginDependencies($instance);
     }
     foreach ($this->getSelectionConditions() as $instance) {
@@ -513,7 +513,7 @@ class BlockDisplayVariant extends VariantBase implements ContextAwareVariantInte
   public function getConfiguration() {
     return array(
       'selection_conditions' => $this->getSelectionConditions()->getConfiguration(),
-      'blocks' => $this->getBlockBag()->getConfiguration(),
+      'blocks' => $this->getBlockCollection()->getConfiguration(),
     ) + parent::getConfiguration();
   }
 
